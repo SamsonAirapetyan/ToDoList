@@ -1,0 +1,40 @@
+библиотеки : go get -u github.com/gin-gonic/gin  //http запросы
+             go get -u github.com/spf13/viper  //Работа с конфиг
+             go get -u github.com/jmoiron/sqlx  //работа с SQL
+             go get github.com/lib/pq -драйвер для работы с Бд
+             go get -u github.com/joho/godotenv  //работа с .env
+
+
+
+Настройка Postgres  в Docker:
+    sudo docker pull postgres
+
+Настройка Бд в Docker:
+    sudo docker container run --name=todo-db -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=samson -p 5432:5432 -d --rm postgres
+    sudo docker ps - проверка на то, что все сработало
+
+    Настройка миграции: 
+            Установка утилиты migrate:
+                sudo apt-get update
+                sudo apt-get install migrate
+            migrate create -ext sql -dir ./schema -seq init
+            Далее мы пишем инструкции по созданию и удалению БД,
+            После чего поднимаем версию БД создания
+            migrate -path ./schema -database postgres://postgres:samson@localhost:5432/postgres?sslmode=disable up
+
+            Заходим в наш контейнер
+            sudo docker  exet -it 0b85fbd5f64c /bin/bash
+                psql -U postgres
+                \d
+                    select * from schema_migrations;
+                    Сохранение версии:
+                    update schema_migrations set version='000001', dirty=false;
+
+            Пробуем опустить БД для проверки
+            migrate -path ./schema -database postgres://postgres:samson@localhost:5432/postgres?sslmode=disable down
+            проверяем
+            sudo docker  exet -it 0b85fbd5f64c /bin/bash
+                            psql -U postgres
+                            \d
+            Снова запускаем БД
+            migrate -path ./schema -database postgres://postgres:samson@localhost:5432/postgres?sslmode=disable up
