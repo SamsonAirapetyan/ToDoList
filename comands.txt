@@ -4,6 +4,7 @@
              go get github.com/lib/pq -драйвер для работы с Бд
              go get -u github.com/joho/godotenv  //работа с .env
              go get -u github.com/sirupsen/logrus //логирование
+             go get -u github.com/dgrijalva/jwt-go //jwt token
 
 
 

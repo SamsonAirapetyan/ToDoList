@@ -13,11 +13,9 @@ func (h *Handler) signUp(c *gin.Context) {
 		NewErrorResponse(c, http.StatusBadRequest, "Problem with request")
 		return
 	}
-	var er error
-	//er = h.services.Authorization.CreateUser(input)
-	id, er := h.services.Authorization.CreateUser(input)
-	if er != nil {
-		NewErrorResponse(c, http.StatusInternalServerError, er.Error())
+	id, err := h.services.Authorization.CreateUser(input)
+	if err != nil {
+		NewErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -26,6 +24,25 @@ func (h *Handler) signUp(c *gin.Context) {
 	})
 }
 
-func (h *Handler) signIn(c *gin.Context) {
+type signInput struct {
+	Username string `json:"username" binding:"required"`
+	Password string `json:"password" binding:"required"`
+}
 
+func (h *Handler) signIn(c *gin.Context) {
+	var input signInput
+
+	if err := c.BindJSON(&input); err != nil {
+		NewErrorResponse(c, http.StatusBadRequest, "Problem with request")
+		return
+	}
+	token, err := h.services.Authorization.GenerateToken(input.Username, input.Password)
+	if err != nil {
+		NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"token": token,
+	})
 }
