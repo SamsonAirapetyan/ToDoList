@@ -5,4 +5,4 @@ db:
   username: "postgres"
   dbname: "postgres"
   sslmode: "disable"
-  port: "8080"
+  port: "5432"

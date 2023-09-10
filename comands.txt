@@ -3,6 +3,7 @@
              go get -u github.com/jmoiron/sqlx  //работа с SQL
              go get github.com/lib/pq -драйвер для работы с Бд
              go get -u github.com/joho/godotenv  //работа с .env
+             go get -u github.com/sirupsen/logrus //логирование
 
 
 
@@ -23,7 +24,7 @@
             migrate -path ./schema -database postgres://postgres:samson@localhost:5432/postgres?sslmode=disable up
 
             Заходим в наш контейнер
-            sudo docker  exet -it 0b85fbd5f64c /bin/bash
+            sudo docker  exec -it 0b85fbd5f64c /bin/bash
                 psql -U postgres
                 \d
                     select * from schema_migrations;
@@ -33,7 +34,7 @@
             Пробуем опустить БД для проверки
             migrate -path ./schema -database postgres://postgres:samson@localhost:5432/postgres?sslmode=disable down
             проверяем
-            sudo docker  exet -it 0b85fbd5f64c /bin/bash
+            sudo docker  exec -it 0b85fbd5f64c /bin/bash
                             psql -U postgres
                             \d
             Снова запускаем БД
