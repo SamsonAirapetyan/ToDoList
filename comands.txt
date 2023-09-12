@@ -7,6 +7,11 @@
              go get -u github.com/dgrijalva/jwt-go //jwt token
 
 
+Стоит прочитать для большего понимания!
+{
+    Транзакции (использовал в БД)
+}
+
 
 Настройка Postgres  в Docker:
     sudo docker pull postgres
