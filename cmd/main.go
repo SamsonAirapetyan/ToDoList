@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"github.com/SamsonAirapetyan/todo-app"
 	"github.com/SamsonAirapetyan/todo-app/pkg/handler"
@@ -11,6 +12,8 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 	"os"
+	"os/signal"
+	"syscall"
 )
 
 func main() {
@@ -41,10 +44,24 @@ func main() {
 
 	// handlers := new(handler.Handler)
 	srv := new(todo.Server)
-	if err := srv.Run(viper.GetString("port"), handlers.InitRoutes()); err != nil {
-		logrus.Fatal(err)
-	}
+	go func() {
+		if err := srv.Run(viper.GetString("port"), handlers.InitRoutes()); err != nil {
+			logrus.Fatal(err)
+		}
+	}()
+	logrus.Print("ToDoApp running...")
 
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT)
+	<-quit
+
+	logrus.Print("ToDoApp Stop")
+	if err = srv.Shutdown(context.Background()); err != nil {
+		logrus.Errorf("Error with shutting down: %s", err.Error())
+	}
+	if err = db.Close(); err != nil {
+		logrus.Errorf("Error with Data Base Close: %s", err.Error())
+	}
 }
 
 // служит для получения данных с конфиг, для этого нужна библиотека viper
