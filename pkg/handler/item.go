@@ -7,6 +7,19 @@ import (
 	"strconv"
 )
 
+// @Summary Create item
+// @Security ApiKeyAuth
+// @Tags items
+// @Description Creating a new item
+// @ID Create-Item
+// @Accept  json
+// @Produce  json
+// @Param input body todo.TodoItem true "Item info"
+// @Success 200 {integer} integer 1
+// @Failure 400,404 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Failure default {object} errorResponse
+// @Router /api/lists/:id/items [post]
 func (h *Handler) createitem(c *gin.Context) {
 	userid, err := getUserId(c)
 	if err != nil {
@@ -35,6 +48,18 @@ func (h *Handler) createitem(c *gin.Context) {
 	})
 }
 
+// @Summary Get all items
+// @Security ApiKeyAuth
+// @Tags items
+// @Description Get All items
+// @ID Show-Items
+// @Accept  json
+// @Produce  json
+// @Success 200 {integer} integer 1
+// @Failure 400,404 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Failure default {object} errorResponse
+// @Router /api/lists/:id/items [get]
 func (h *Handler) getAllItems(c *gin.Context) {
 	userid, err := getUserId(c)
 	if err != nil {
@@ -56,6 +81,18 @@ func (h *Handler) getAllItems(c *gin.Context) {
 
 }
 
+// @Summary Get item
+// @Security ApiKeyAuth
+// @Tags items
+// @Description Get item by ID
+// @ID Item-by-ID
+// @Accept  json
+// @Produce  json
+// @Success 200 {integer} integer 1
+// @Failure 400,404 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Failure default {object} errorResponse
+// @Router /api/items/:item_id [get]
 func (h *Handler) getItemById(c *gin.Context) {
 	userid, err := getUserId(c)
 	if err != nil {
@@ -77,6 +114,19 @@ func (h *Handler) getItemById(c *gin.Context) {
 
 }
 
+// @Summary Update item
+// @Security ApiKeyAuth
+// @Tags items
+// @Description Update item by ID
+// @ID Item-update
+// @Param input body todo.UpdateItemInput true "item update info"
+// @Accept  json
+// @Produce  json
+// @Success 200 {integer} integer 1
+// @Failure 400,404 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Failure default {object} errorResponse
+// @Router /api/items/:item_id [post]
 func (h *Handler) updateItem(c *gin.Context) {
 	userid, err := getUserId(c)
 	if err != nil {
@@ -104,6 +154,18 @@ func (h *Handler) updateItem(c *gin.Context) {
 	})
 }
 
+// @Summary Delete item
+// @Security ApiKeyAuth
+// @Tags items
+// @Description Delete item by ID
+// @ID Delete-ID
+// @Accept  json
+// @Produce  json
+// @Success 200 {integer} integer 1
+// @Failure 400,404 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Failure default {object} errorResponse
+// @Router /api/items/:item_id [delete]
 func (h *Handler) deleteItem(c *gin.Context) {
 	userid, err := getUserId(c)
 	if err != nil {
